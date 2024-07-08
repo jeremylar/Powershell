@@ -155,5 +155,8 @@ set-DnsClientServerAddress -InterfaceIndex $interface.InterfaceIndex -ServerAddr
 
 (Get-ChildItem -Path c:\pstbak\*.* -Filter *.pst | ? {  $_.LastWriteTime -gt (Get-Date).AddDays(-3) }).Count
 
-
 Get-WinEvent -LogName "Microsoft-Windows-AAD/Operational" -MaxEvents 20 |where {$_.TaskDisplayName -like "*AadCloudAPPlugin*"} |ft TimeCreated,id,KeyWordsDisplayNames,Message -wrap -autosize
+
+Get-ScheduledTask | where {$_.TaskName -eq 'PushLaunch'} | Start-ScheduledTask
+
+Get-ADUser -Filter {(Enabled -eq $False)} | Select-Object Name, UserPrincipalName | Export-CSV “D:\temp\DisabledUsers.CSV”
