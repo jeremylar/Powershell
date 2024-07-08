@@ -22,7 +22,7 @@ psexec.exe \\computer -c C:\temp\runmultiplecmds.cmd
 Get-Service -Name WinRM -ComputerName "Computer" | Start-Service
 Invoke-Command -ComputerName <name> -ScriptBlock {Invoke-WebRequest -Uri https://<url>/agent_Install.MSI -Outfile C:\Windows\Temp\agent_Install.MSI}
 
-
+Test-Path -Path C:\Windows\Temp\srpblockedge.reg
 
 #Office365-x64 configuration and installation
 Invoke-WebRequest -URI "https://<url>/configuration-Office365-x64.xml" -Outfile "C:\Windows\Temp\configuration-Office365-x64.xml"
