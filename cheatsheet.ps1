@@ -160,3 +160,5 @@ Get-WinEvent -LogName "Microsoft-Windows-AAD/Operational" -MaxEvents 20 |where {
 Get-ScheduledTask | where {$_.TaskName -eq 'PushLaunch'} | Start-ScheduledTask
 
 Get-ADUser -Filter {(Enabled -eq $False)} | Select-Object Name, UserPrincipalName | Export-CSV “D:\temp\DisabledUsers.CSV”
+
+Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*"
