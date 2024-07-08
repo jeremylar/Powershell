@@ -152,3 +152,5 @@ powershell -Command "Invoke-WebRequest -URI https://<url>/Cisco/profile.xml -Out
 Enable-NetAdapter -InterfaceDescription "Cisco AnyConnect Virtual Miniport Adapter for Windows x64"
 $interface = Get-NetAdapter | Where-Object {$_.InterfaceDescription -eq "Cisco AnyConnect Virtual Miniport Adapter for Windows x64"} | Select-Object InterfaceIndex
 set-DnsClientServerAddress -InterfaceIndex $interface.InterfaceIndex -ServerAddresses ("192.168.20.9","192.168.35.9")
+
+(Get-ChildItem -Path c:\pstbak\*.* -Filter *.pst | ? {  $_.LastWriteTime -gt (Get-Date).AddDays(-3) }).Count
