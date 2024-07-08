@@ -70,6 +70,15 @@ get-childitem -Path "E:\HomeDrives\JF" -recurse -force | where-object {$_.FullNa
 #Remove File with Size 0 bytes
 get-childitem -Path "E:\HomeDrives\JF" -recurse -force | where{$_.Length -eq 0} | Remove-Item -Force
 
+Get-ChildItem | Where-Object Name -Like '*`[*' | ForEach-Object { Remove-Item -LiteralPath $_.Name }
+
+
+Set-Service -Name "ScreenConnect Client (b89a594aee64dc)" -StartupType Disabled -Status Stopped​
+Set-Service -Name "ScreenConnect Client (7fcabefea4a1ac)" -StartupType Disabled -Status Stopped​
+Stop-Service -Name "ScreenConnect Client (b89a594aee64dc)"
+Stop-Service -Name "ScreenConnect Client (7fcabefea4a1ac)"
+Restart-Service -Name "ScreenConnect Client (7fcabefea4a1ac)"
+
 #Services
 Set-Service -Name "ScreenConnect Client (b89a594aee64dc84)" -StartupType Disabled -Status Stopped​
 Set-Service -Name "ScreenConnect Client (7fcabefea4a1ace5)" -StartupType Disabled -Status Stopped​
@@ -127,3 +136,12 @@ Set-MsolUserPrincipalName -UserPrincipalName "mhionas@hccs-nys.org" -NewUserPrin
 Set-MsolUser -UserPrincipalName eeleftheriadis@hccsnysorg.onmicrosoft.com -ImmutableId eeleftheriadis@hccs-nys.org
 Set-MsolUserPrincipalName -UserPrincipalName "eeleftheriadis@hccsnysorg.onmicrosoft.com" -NewUserPrincipalName "eeleftheriadis@hccs-nys.org"
 Get-MsolUser -UserPrincipalName eeleftheriadis@hccs-nys.org | Select ImmutableID
+
+
+#Cisco Anyconnect
+powershell -Command "Invoke-WebRequest -URI https://<url>/cisco-secure-client-win-5.0.01242-core-vpn-predeploy-k9.msi -Outfile C:\Windows\Temp\cisco-secure-client-win-5.0.01242-core-vpn-predeploy-k9.msi"
+msiexec /i C:\Windows\Temp\cisco-secure-client-win-5.0.01242-core-vpn-predeploy-k9.msi /norestart /passive
+powershell -Command "Invoke-WebRequest -URI https://<url>/Cisco/profile.xml -Outfile 'C:\ProgramData\Cisco\Cisco Secure Client\VPN\Profile\profile.xml'"
+Enable-NetAdapter -InterfaceDescription "Cisco AnyConnect Virtual Miniport Adapter for Windows x64"
+$interface = Get-NetAdapter | Where-Object {$_.InterfaceDescription -eq "Cisco AnyConnect Virtual Miniport Adapter for Windows x64"} | Select-Object InterfaceIndex
+set-DnsClientServerAddress -InterfaceIndex $interface.InterfaceIndex -ServerAddresses ("192.168.20.9","192.168.35.9")
