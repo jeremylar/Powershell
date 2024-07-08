@@ -87,6 +87,13 @@ Stop-Service -Name "ScreenConnect Client (7fcabefea4a1ace5)"
 Restart-Service -Name "ScreenConnect Client (7fcabefea4a1ace5)"
 Get-Service -Name "LTSVC" | Remove-Service
 
+#check if file exists, if not and service exists
+ If (Test-Path -Path "C:\Windows\LTSvc" -eq $False)
+ {
+Remove-Service -Name "MSPNetworks Monitoring Service" -Confirm:$false
+}
+
+
 #Return single item from ps command
 Get-AzADGroup -DisplayName "developers"  | Select -ExpandProperty Id
 (Get-AzADGroup -DisplayName "developers").Id
