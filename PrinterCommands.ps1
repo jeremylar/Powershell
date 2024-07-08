@@ -3,9 +3,24 @@ $tempname = $_.DriverName.ToLower()
 if($tempname -like "*lexmark*"){write-host($_.Name)
 Remove-Printer -name $_.Name}  
 }
+
 Get-Printer
 Get-Printer | Select-Object Name,Type,ShareName,PortName,DriverName,Location,PrinterStatus | ConvertTo-Json | ConvertFrom-Json
 Get-ChildItem Registry::\HKEY_Users | Where-Object { $_.PSChildName -NotMatch ".DEFAULT|S-1-5-18|S-1-5-19|S-1-5-20|_Classes" } | Select-Object -ExpandProperty PSChildName | ForEach-Object { Get-ChildItem Registry::\HKEY_Users\$_\Printers\Connections -Recurse | Where-Object {$_.Name -Like "*lexmark*"}| Select-Object Name}
+
+$printers = Get-Printer
+foreach ($printer in $printers)
+{if($printer.Name -notcontains "Microsoft"){
+Write-Host("Name : "+$printer.Name)
+Write-Host("Type : "+$printer.Type)
+Write-Host("ShareName : "+$printer.ShareName)
+Write-Host("PortName : "+$printer.PortName)
+Write-Host("DriverName : "+$printer.DriverName)
+Write-Host("Location : "+$printer.Location)
+Write-Host("PrinterStatus : "+$printer.PrinterStatus)
+}
+}
+
 
 
 Get-ChildItem Registry::\HKEY_Users | Where-Object { $_.PSChildName -NotMatch ".DEFAULT|S-1-5-18|S-1-5-19|S-1-5-20|_Classes" } | Select-Object -ExpandProperty PSChildName | ForEach-Object { Get-ChildItem Registry::\HKEY_Users\$_\Printers\Connections -Recurse | Where-Object {$_.Name -Like "*lexmark*"}| Remove-Object}
