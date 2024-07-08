@@ -154,3 +154,6 @@ $interface = Get-NetAdapter | Where-Object {$_.InterfaceDescription -eq "Cisco A
 set-DnsClientServerAddress -InterfaceIndex $interface.InterfaceIndex -ServerAddresses ("192.168.20.9","192.168.35.9")
 
 (Get-ChildItem -Path c:\pstbak\*.* -Filter *.pst | ? {  $_.LastWriteTime -gt (Get-Date).AddDays(-3) }).Count
+
+
+Get-WinEvent -LogName "Microsoft-Windows-AAD/Operational" -MaxEvents 20 |where {$_.TaskDisplayName -like "*AadCloudAPPlugin*"} |ft TimeCreated,id,KeyWordsDisplayNames,Message -wrap -autosize
