@@ -117,6 +117,7 @@ net stop w32time
 net start w32time
 w32tm /resync
 
+tzutil /s "Eastern Standard Time"
 
 Set-TimeZone -Id "Eastern Standard Time"
 
